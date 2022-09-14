@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 187477851}
   - component: {fileID: 187477850}
   - component: {fileID: 187477849}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6493eb08f5cbafb44a03ccb713bc6e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseMoveSpeed: 20
+  _currentMoveSpeed: 20
+  _inAirMoveSpeed: 10
+  _playerBaseMass: 1
+  _playerFallingMass: 3
+  _rotationSpeedX: 120
   _dashForce: 3
+  _dashCooldown: 5
+  _collisionLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  _sensorDistance: 0.5
+  _offset: 0.5
+  _botOffset: 0.25
 --- !u!54 &340696619
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -472,7 +485,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 779007681}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enviroment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +520,7 @@ GameObject:
   - component: {fileID: 1021348429}
   - component: {fileID: 1021348433}
   - component: {fileID: 1021348432}
-  - component: {fileID: 1021348431}
+  - component: {fileID: 1021348434}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -530,20 +543,6 @@ Transform:
   m_Father: {fileID: 340696617}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1021348431
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021348428}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1021348432
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -594,6 +593,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021348428}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1021348434
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021348428}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1825643688
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +615,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1825643689}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,7 +650,7 @@ GameObject:
   - component: {fileID: 1875478304}
   - component: {fileID: 1875478303}
   - component: {fileID: 1875478302}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LargeWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

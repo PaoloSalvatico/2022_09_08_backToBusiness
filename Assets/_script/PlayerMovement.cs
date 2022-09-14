@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private float _dashForce;
+    [SerializeField] private float _dashCooldown = 2f;
 
     [Header("Collision Management")]
     [SerializeField] private LayerMask _collisionLayers;
@@ -31,13 +32,33 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _eulerAngleVelocity;
     private Vector3 _localMove;
 
+    private Vector3 _sensorOffset;
+    private Vector3 _botSensorOffset;
+
     private Rigidbody _rigidbody;
 
     private bool _isDashing;
+    private bool _isDashInCooldown;
+
+    private bool _topCollisionCheck;
+    private bool _midTopCollisionCheck;
+    private bool _midCollisionCheck;
+    private bool _midBotCollisionCheck;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        Init();
+    }
+
+    private void Init()
+    {
+        _sensorOffset = new Vector3(0f, _offset, 0f);
+        _botSensorOffset = new Vector3(0f, _botOffset, 0f);
     }
 
     private void OnEnable()
@@ -65,6 +86,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        #region Sensors
+        // Top Sensor
+        ShootSensor(transform.position + transform.up, ref _topCollisionCheck);
+        // Middle-Top Sensor
+        ShootSensor(transform.position + _sensorOffset, ref _midTopCollisionCheck);
+        // Middle Sensor
+        ShootSensor(transform.position, ref _midCollisionCheck);
+        // Middle-Bottom Sensor
+        ShootSensor(transform.position - _botSensorOffset, ref _midBotCollisionCheck);
+        #endregion
 
         // Apply movement to rigidbody
         _localMove = transform.TransformDirection(_moveAmount) * Time.fixedDeltaTime;
@@ -77,14 +108,18 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.MoveRotation(_rigidbody.rotation * newRotation);
     }
 
+    /// <summary>
+    /// Is player colliding
+    /// </summary>
+    /// <returns>True if collides</returns>
     private bool IsColliding()
     {
-        throw new NotImplementedException();
+        return _topCollisionCheck || _midTopCollisionCheck || _midCollisionCheck || _midBotCollisionCheck;
     }
 
     public void OnDash()
     {
-        Dash();
+        if(!_isDashing) Dash();
     }
 
     private void Dash()
@@ -97,6 +132,17 @@ public class PlayerMovement : MonoBehaviour
         {
             _rigidbody.AddRelativeForce(_moveDirection * _dashForce, ForceMode.Impulse);
         }
+
+        _isDashing = true;
+        StartCoroutine(DashCooldown());
+    }
+
+    private IEnumerator DashCooldown()
+    {
+        _isDashInCooldown = true;
+        yield return new WaitForSeconds(_dashCooldown);
+        _isDashInCooldown = false;
+        _isDashing = false;
     }
 
     private void ShootSensor(Vector3 startPosition, ref bool collCheck)
