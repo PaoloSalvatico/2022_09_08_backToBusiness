@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Init player")]
+    [SerializeField] private Transform _startPos;
+
     [Header("Movement")]
     [SerializeField] private float _baseMoveSpeed = 20;
     [SerializeField] private float _currentMoveSpeed = 20;
@@ -26,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _offset = .5f;
     [SerializeField] private float _botOffset = .25f;
 
+    [Header("Managers")]
+    [SerializeField] private TimeManager _timeManager;
+
     private Vector3 _moveDirection;
     private Vector3 _moveAmount;
     private Vector3 _smoothMoveVelocity;
@@ -45,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _midCollisionCheck;
     private bool _midBotCollisionCheck;
 
+    public TimeManager TimeManager => _timeManager;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -59,11 +67,20 @@ public class PlayerMovement : MonoBehaviour
     {
         _sensorOffset = new Vector3(0f, _offset, 0f);
         _botSensorOffset = new Vector3(0f, _botOffset, 0f);
+
+        gameObject.transform.position = _startPos.position;
+        gameObject.transform.rotation = _startPos.rotation;
     }
 
     private void OnEnable()
     {
         InputManager.Instance.OnDashPerformed += OnDash;
+    }
+
+    public void RestartRun()
+    {
+        _timeManager.Init();
+        Init();
     }
 
     private void Update()
