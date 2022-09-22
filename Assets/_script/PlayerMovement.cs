@@ -53,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
 
     public TimeManager TimeManager => _timeManager;
 
+    public Transform StartPos => _startPos;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -65,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Init()
     {
+        InputManager.Instance.EnableAllPlayerInputs();
         _sensorOffset = new Vector3(0f, _offset, 0f);
         _botSensorOffset = new Vector3(0f, _botOffset, 0f);
 

@@ -12,7 +12,7 @@ public class CheckPointController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out PlayerMovement player))
+        if (other.TryGetComponent(out PlayerMovement player))
         {
             player.TimeManager.AddTime(_addingTime);
             _spawnManager.Spawn();

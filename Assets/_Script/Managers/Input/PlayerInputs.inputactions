@@ -112,6 +112,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Camera",
+            "id": "f235ce8a-9476-4fc4-a170-4ca271f3cd97",
+            "actions": [
+                {
+                    "name": "ChangeCam",
+                    "type": "Button",
+                    "id": "99a4da9b-9a0d-44b5-ada0-d8b533f39c66",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0abab3af-bb87-45fa-9983-38bb3e22ab78",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeCam",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

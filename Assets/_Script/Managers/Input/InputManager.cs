@@ -16,12 +16,14 @@ public class InputManager : Singleton<InputManager>
     {
         _input.Enable();
         _input.Player.Dash.performed += PerformDash;
+        _input.Camera.ChangeCam.performed += PerformChangeCamera;
     }
 
     private void OnDisable()
     {
         _input.Disable();
         _input.Player.Dash.performed -= PerformDash;
+        _input.Camera.ChangeCam.performed -= PerformChangeCamera;
     }
 
     #region Move
@@ -33,6 +35,34 @@ public class InputManager : Singleton<InputManager>
     public Vector2 LookValue => _input.Player.Look.ReadValue<Vector2>();
     #endregion
 
+    #region EnableInputs
+    public void EnableAllPlayerInputs()
+    {
+        _input.Player.Enable();
+    }
+
+    public void EnableCameraInputs()
+    {
+        _input.Camera.Enable();
+    }
+    #endregion
+
+    #region DisableInputs
+    public void DisableAllPlayerInputs()
+    {
+        _input.Player.Disable();
+    }
+
+    public void DisablePlayerLook()
+    {
+        _input.Player.Look.Disable();
+    }
+
+    public void DisableCameraInputs()
+    {
+        _input.Camera.Disable();
+    }
+    #endregion
 
     public delegate void DashPerformed();
     public DashPerformed OnDashPerformed;
@@ -42,4 +72,15 @@ public class InputManager : Singleton<InputManager>
         if (OnDashPerformed == null) return;
         OnDashPerformed();
     }
+
+    #region Camera
+    public delegate void PerformChangeCam();
+    public PerformChangeCam OnChangeCam;
+
+    private void PerformChangeCamera(InputAction.CallbackContext context)
+    {
+        if (OnChangeCam == null) return;
+        OnChangeCam();
+    }
+    #endregion
 }

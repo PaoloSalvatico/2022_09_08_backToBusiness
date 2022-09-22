@@ -7,6 +7,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private List<Transform> _spownPointsList;
     [SerializeField] private CheckPointController _checkPoint;
 
+    [SerializeField] private GameObject _spawnArea;
+
     private int count = 0;
 
     private void Awake()
@@ -22,9 +24,15 @@ public class SpawnManager : MonoBehaviour
         InstatiateCheckPoint();
     }
 
+    public void RandomSpawn()
+    {
+        //var x = Random.RandomRange(_spawnArea.transform.position.x)
+        //Vector3 pos = ()
+    }
+
     private void InstatiateCheckPoint()
     {
-        Instantiate(_checkPoint, _spownPointsList[count].position, _spownPointsList[count].rotation);
-        _checkPoint.SpawnManager = this;
+        var newCheckPoint = Instantiate(_checkPoint, _spownPointsList[count].position, _spownPointsList[count].rotation);
+        newCheckPoint.SpawnManager = this;
     }
 }

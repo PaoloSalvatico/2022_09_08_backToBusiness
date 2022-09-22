@@ -35,7 +35,7 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         _actualTime--;
         _timer.text = _actualTime.ToString();
-        if (_actualTime < 6) _timer.color = _redColor;
+        _timer.color = _actualTime < 6 ? _redColor : _greenColor;
         if(_actualTime > 0)
         {
             StartCoroutine(Timer());
@@ -43,11 +43,14 @@ public class TimeManager : MonoBehaviour
         else
         {
             _losePanel.SetActive(true);
+            InputManager.Instance.DisableAllPlayerInputs();
         }
     }
 
     public void AddTime(float add)
     {
         _actualTime += add;
+        _timer.text = _actualTime.ToString();
+        // ADD SOUND and VFX
     }
 }
