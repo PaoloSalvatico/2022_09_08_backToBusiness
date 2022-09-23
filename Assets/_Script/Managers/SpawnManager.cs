@@ -4,35 +4,51 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _spownPointsList;
+    [Header("Manager")]
+    [SerializeField] private bool _isRandomSpawn;
+
+    [Header("Ordinated Spawn")]
+    [SerializeField] private List<Transform> _spawnPointsList;
     [SerializeField] private CheckPointController _checkPoint;
 
-    [SerializeField] private GameObject _spawnArea;
+    [Header("Random Spawn")]
+    [SerializeField] private GameObject _spawnAreaCenter;
+    [SerializeField] private float _offsetX;
+    [SerializeField] private float _offsetZ;
 
     private int count = 0;
 
     private void Awake()
     {
-        InstatiateCheckPoint();
+        if(_isRandomSpawn)
+        {
+            RandomSpawn();
+            return;
+        }
+
+        InstatiateCheckPoint(_spawnPointsList[count].position, _spawnPointsList[count].rotation);
     }
 
     public void Spawn()
     {
         count++;
-        if (count >= _spownPointsList.Count) count = 0;
+        if (count >= _spawnPointsList.Count) count = 0;
 
-        InstatiateCheckPoint();
+        InstatiateCheckPoint(_spawnPointsList[count].position, _spawnPointsList[count].rotation);
     }
 
     public void RandomSpawn()
     {
-        //var x = Random.RandomRange(_spawnArea.transform.position.x)
-        //Vector3 pos = ()
+        var x = Random.Range(_spawnAreaCenter.transform.position.x - _offsetX, _spawnAreaCenter.transform.position.x + _offsetX);
+        var z = Random.Range(_spawnAreaCenter.transform.position.z - _offsetZ, _spawnAreaCenter.transform.position.z + _offsetZ);
+        Vector3 pos = new Vector3(x, 1, z);
+
+        InstatiateCheckPoint(pos, Quaternion.identity);
     }
 
-    private void InstatiateCheckPoint()
+    private void InstatiateCheckPoint(Vector3 pos, Quaternion rot)
     {
-        var newCheckPoint = Instantiate(_checkPoint, _spownPointsList[count].position, _spownPointsList[count].rotation);
+        var newCheckPoint = Instantiate(_checkPoint, pos, rot);
         newCheckPoint.SpawnManager = this;
     }
 }

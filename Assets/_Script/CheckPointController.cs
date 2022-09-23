@@ -15,7 +15,7 @@ public class CheckPointController : MonoBehaviour
         if (other.TryGetComponent(out PlayerMovement player))
         {
             player.TimeManager.AddTime(_addingTime);
-            _spawnManager.Spawn();
+            _spawnManager.RandomSpawn();
             Destroy(gameObject);
         }
     }
